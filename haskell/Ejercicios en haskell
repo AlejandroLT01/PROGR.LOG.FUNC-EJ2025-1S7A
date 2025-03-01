@@ -1,1 +1,53 @@
+-- EJERCICIO 1
+type Carrito = [(String, Double, Double)] -- (Producto, Precio, Porcentaje)
 
+aplicarDescuento :: Double -> Double -> Double
+aplicarDescuento precio porcentaje = precio * (1 - porcentaje / 100)
+
+aplicarIVA :: Double -> Double -> Double
+aplicarIVA precio porcentaje = precio * (1 + porcentaje / 100)
+
+calcularTotal :: Carrito -> (Double -> Double -> Double) -> Double
+calcularTotal carrito funcion = sum [funcion precio porcentaje | (_, precio, porcentaje) <- carrito]
+
+-- EJERCICIO 2
+aplicarFuncion :: (a -> b) -> [a] -> [b]
+aplicarFuncion f lista = [f x | x <- lista]
+
+-- EJERCICIO 3
+longitudesPalabras :: String -> [(String, Int)]
+longitudesPalabras frase = [(palabra, length palabra) | palabra <- words frase]
+
+-- EJERCICIO 4
+aMayusculas :: String -> String
+aMayusculas = map (\c -> if c >= 'a' && c <= 'z' then toEnum (fromEnum c - 32) else c)
+
+clasificarNota :: Double -> String
+clasificarNota n
+    | n >= 95   = "EXCELENTE"
+    | n >= 85   = "NOTABLE"
+    | n >= 75   = "BUENO"
+    | n >= 70   = "SUFICIENTE"
+    | otherwise = "DESEMPEÑO INSUFICIENTE"
+
+convertirNotas :: [(String, Double)] -> [(String, String)]
+convertirNotas notas = [(aMayusculas asignatura, clasificarNota nota) | (asignatura, nota) <- notas]
+
+
+-- EJERCICIO 5
+moduloVector :: [Double] -> Double
+moduloVector vector = sqrt (sum [x^2 | x <- vector])
+
+-- EJERCICIO 6
+media :: [Double] -> Double
+media xs = sum xs / fromIntegral (length xs)
+
+desviacion :: [Double] -> Double
+desviacion xs = sqrt (sum [(x - m) ^ 2 | x <- xs] / fromIntegral (length xs))
+    where m = media xs
+
+valoresAtipicos :: [Double] -> [Double]
+valoresAtipicos xs = [x | x <- xs, abs ((x - m) / d) > 3]
+    where
+        m = media xs
+        d = desviacion xs
