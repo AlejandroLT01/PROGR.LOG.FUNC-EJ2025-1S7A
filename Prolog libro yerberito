@@ -1,0 +1,55 @@
+% Base de conocimiento
+plant(estafiate).
+plant(eucalipto).
+plant(fenogreco).
+plant(genciana).
+plant(geranio).
+
+treats(estafiate, problemas_digestivos).
+treats(estafiate, parásitos_intestinales).
+treats(estafiate, dolor_menstrual).
+
+treats(eucalipto, gripe).
+treats(eucalipto, resfriado).
+treats(eucalipto, bronquitis).
+
+treats(fenogreco, debilidad_general).
+treats(fenogreco, problemas_digestivos).
+treats(fenogreco, inflamaciones).
+
+treats(genciana, falta_de_apetito).
+treats(genciana, debilidad_digestiva).
+treats(genciana, dispepsia).
+
+treats(geranio, heridas).
+treats(geranio, inflamaciones).
+treats(geranio, dolor_de_garganta).
+
+organ_effect(estafiate, sistema_digestivo).
+organ_effect(eucalipto, sistema_respiratorio).
+organ_effect(fenogreco, sistema_inmunológico).
+organ_effect(genciana, sistema_digestivo).
+organ_effect(geranio, piel).
+
+use_form(estafiate, infusión).
+use_form(eucalipto, inhalación).
+use_form(fenogreco, infusión).
+use_form(genciana, tintura).
+use_form(geranio, cataplasma).
+
+% Reglas
+is_medicinal(X) :- plant(X).
+treats_disease(X, Y) :- treats(X, Y).
+affects_organ(X, Y) :- organ_effect(X, Y).
+
+useful_for_illness(Plant, Illness) :-
+    plant(Plant),
+    treats(Plant, Illness).
+
+supports_system(Plant, System) :-
+    plant(Plant),
+    organ_effect(Plant, System).
+
+recommended(Plant, Illness, Form) :-
+    treats(Plant, Illness),
+    use_form(Plant, Form).
